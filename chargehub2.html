@@ -1,0 +1,796 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChargeHub | CEC</title>
+<link rel="icon" type="img/png" href="charghub-logo.png">
+<link rel="stylesheet" href="design.css">
+
+</head>
+
+<body>
+
+<header>
+    <div class="brand">
+        <div class="logo-icon">
+             <img src="charghub-logo.png" alt="ChargeHub logo" class="logo-img">
+        </div>
+        <div class="brand-name">charge<span>hub</span></div>
+    </div>
+
+    <nav>
+        <button class="active" onclick="showPage('home', this)">Home</button>
+        <button onclick="showPage('dashboard', this)">Dashboard</button>
+        <button onclick="showPage('booking', this)">Book a Slot</button>
+        <button onclick="showPage('history', this)">My Activity</button>
+    </nav>
+</header>
+
+<main>
+
+<!-- HOME PAGE -->
+
+<section id="home" class="page active">
+    <div class="hero">
+        <div>
+            <div class="eyebrow">⚡ YOUR CAMPUS CHARGING BUDDY</div>
+
+            <h1>Low battery?<br><span>We've got you.</span></h1>
+
+            <p>
+                Welcome to ChargeHub, your campus phone charging service
+                at Cebu Eastern College. Choose your charging compartment,
+                select your duration, and confirm your demo booking
+                in just a few clicks.
+            </p>
+
+            <div class="hero-actions">
+                <button class="primary" onclick="showPage('booking')">
+                    ⚡ Find a Charging Slot
+                </button>
+
+                <button class="secondary" onclick="showPage('dashboard')">
+                    Explore Dashboard →
+                </button>
+            </div>
+        </div>
+
+        <div class="hero-art hero-video">
+            <video id="chargeHubAd"
+             autoplay
+             muted
+             loop
+             playsinline
+             preload="metadata">
+            <source src="chargehub-ads.mp4"
+                type="video/mp4">
+                Your browser does not support video.
+            </video>
+
+    <!-- Music controls -->
+            <div class="video-controls">
+                <span id="videoTime">0:00</span>
+
+                <div class="volume-control">
+                    <button type="button" id="musicToggle" aria-label="Turn sound on">
+                    🔇
+                    </button>
+                <input type="range" id="musicVolume"
+                    min="0" max="100" value="30"
+                    aria-label="Volume">
+                </div>
+            </div>
+
+
+
+            <div class="phone">
+                <div class="phone-top">
+                    <span>9:41</span>
+                    <span>● ● ●</span>
+                </div>
+
+                <div class="battery">
+                    <div class="battery-fill"></div>
+                    <div class="bolt">ϟ</div>
+                </div>
+
+                <strong>78%</strong>
+                <small>Powering your day</small>
+            </div>
+
+            <div class="float-card float-two">
+                ✓ Easy booking
+                <strong>Quick and simple</strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-heading">
+        <h2>Charging made easy</h2>
+        <p>Everything you need to power up between classes.</p>
+    </div>
+
+    <div class="cards">
+        <div class="card">
+            <div class="card-icon">▣</div>
+            <h3>Choose Your Slot</h3>
+            <p>Select from 20 charging compartments and check which ones are available.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">₱</div>
+            <h3>Easy Checkout</h3>
+            <p>Choose your charging duration, review the price, and select a demo payment method.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">◷</div>
+            <h3>Track Your Booking</h3>
+            <p>Review your confirmed bookings, charging time, and spending.</p>
+        </div>
+    </div>
+
+    <div class="promo">
+        <div>
+            <h3>Ready for your next class?</h3>
+            <p>Reserve a charging slot and keep your school day moving.</p>
+        </div>
+
+        <button class="primary" onclick="showPage('booking')">
+            Book a Charging Slot →
+        </button>
+    </div>
+</section>
+
+<!-- DASHBOARD -->
+
+<section id="dashboard" class="page">
+    <div class="page-heading">
+        <div>
+            <h1>Student Dashboard</h1>
+            <p>Welcome to ChargeHub! Manage your campus charging sessions here.</p>
+        </div>
+
+        <button class="primary" onclick="showPage('booking')">
+            ⚡ Book a Slot
+        </button>
+    </div>
+
+    <div class="promo" style="margin-top:0;margin-bottom:25px">
+        <div>
+            <h2>Keep your phone powered up!</h2>
+            <p>Choose an available charging compartment and book your session.</p>
+        </div>
+
+        <button class="primary" onclick="showPage('booking')">
+            Find a Slot →
+        </button>
+    </div>
+
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-label">Total Bookings</div>
+            <div class="stat-number" id="statBookings">0</div>
+            <div class="stat-note">Your confirmed sessions</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-label">Total Charging Time</div>
+            <div class="stat-number" id="statTime">0 min</div>
+            <div class="stat-note">Across your bookings</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-label">Total Spending</div>
+            <div class="stat-number" id="statSpent">₱0</div>
+            <div class="stat-note">Transactions</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-label">Available Slots</div>
+            <div class="stat-number" id="statAvailable">20/20</div>
+            <div class="stat-note">Charging station status</div>
+        </div>
+    </div>
+
+    <div class="dashboard-grid">
+        <div class="panel">
+            <div class="panel-heading">
+                <h3>Charging Station Overview</h3>
+                <span>CEC · 20 Compartments</span>
+            </div>
+
+            <p style="font-size:12px;color:var(--muted);margin-bottom:16px">
+                Select an available compartment to start a booking.
+            </p>
+
+            <div class="slots" id="dashboardSlots"></div>
+
+            <p class="notice">
+                Turquoise indicates your selected slot. Orange indicates a slot already booked in this demo.
+            </p>
+
+            <button class="primary full"
+                    style="margin-top:18px"
+                    onclick="showPage('booking')">
+                Choose a Charging Slot →
+            </button>
+        </div>
+
+        <div>
+            <div class="panel">
+                <div class="panel-heading">
+                    <h3>Recent Activity</h3>
+                    <button class="secondary" onclick="showPage('history')">
+                        View All
+                    </button>
+                </div>
+
+                <div id="recentActivity"></div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-heading">
+                    <h3>Quick Actions</h3>
+                </div>
+
+                <button class="primary full" onclick="showPage('booking')">
+                    ⚡ Book a Charging Slot
+                </button>
+
+                <button class="secondary full"
+                        style="margin-top:10px"
+                        onclick="showPage('history')">
+                    ◷ View Booking History
+                </button>
+
+                <div style="margin-top:20px;padding:15px;background:var(--turquoise-light);border-radius:12px">
+                    <strong style="font-size:13px">Charging Rates</strong>
+                    <p style="font-size:12px;line-height:1.8;margin-top:8px">
+                        30 minutes — ₱10<br>
+                        1 hour — ₱20<br>
+                        2 hours — ₱30
+                    </p>
+                </div>
+
+                <p class="notice">
+                    All payments are demonstrations only. No real money is collected.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- BOOKING PAGE -->
+
+<section id="booking" class="page">
+    <div class="page-heading">
+        <div>
+            <h1>Book a Charging Slot ⚡</h1>
+            <p>Choose one of the 20 compartments and your preferred duration.</p>
+        </div>
+
+        <button class="secondary" onclick="showPage('dashboard')">
+            ← Dashboard
+        </button>
+    </div>
+
+    <div class="dashboard-grid">
+        <div class="panel">
+            <div class="panel-heading">
+                <h3>Charging Compartments</h3>
+                <span id="bookingSlotCount">20 available</span>
+            </div>
+
+            <div class="slots" id="bookingSlots"></div>
+
+            <p class="notice">
+                Turquoise means selected. Orange means already booked.
+                Select any available compartment to continue.
+            </p>
+        </div>
+
+        <div class="panel">
+            <div class="panel-heading">
+                <h3>Your Booking</h3>
+                <span class="pill">Review</span>
+            </div>
+
+            <div class="form-field">
+                <label for="bookingSlot">Selected Compartment</label>
+                <select id="bookingSlot" onchange="selectSlot(this.value)"></select>
+            </div>
+
+            <div class="form-field">
+                <label for="bookingDuration">Charging Duration</label>
+                <select id="bookingDuration" onchange="updatePrice()">
+                    <option value="30">30 minutes - ₱10</option>
+                    <option value="60" selected>1 hour - ₱20</option>
+                    <option value="120">2 hours - ₱30</option>
+                </select>
+            </div>
+
+            <div class="form-field">
+                <label for="bookingPayment">Payment Method</label>
+                <select id="bookingPayment">
+                    <option>GCash</option>
+                    <option>Maya</option>
+                    <option>Pay at Station/ Cash</option>
+                </select>
+            </div>
+
+            <div class="price-line">
+                <span>Total Price</span>
+                <strong id="bookingPrice">₱20</strong>
+            </div>
+
+            <button class="primary full" id="confirmButton"
+                    onclick="confirmBooking()">
+                Confirm Booking →
+            </button>
+
+            <p class="notice">
+                This is a school project prototype. No real payment or actual hardware reservation is processed.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- MY ACTIVITY -->
+
+<section id="history" class="page">
+    <div class="page-heading">
+        <div>
+            <h1>My Activity</h1>
+            <p>Review your ChargeHub booking history.</p>
+        </div>
+
+        <button class="primary" onclick="showPage('booking')">
+            + Book Again
+        </button>
+    </div>
+
+    <div class="panel">
+        <div class="panel-heading">
+            <h3>Session History</h3>
+            <span id="historyCount">0 bookings</span>
+        </div>
+
+        <div class="history-row history-header">
+            <span>SESSION</span>
+            <span>DATE</span>
+            <span>AMOUNT</span>
+            <span>STATUS</span>
+        </div>
+
+        <div id="historyRows"></div>
+
+        <p class="notice">
+            Bookings are stored only while this page remains open. Refreshing the page resets the demo.
+        </p>
+    </div>
+</section>
+
+</main>
+
+<footer>
+    <strong>⚡ ChargeHub</strong><br>
+    Student Phone Charging Station · Cebu Eastern College<br>
+    School Project Prototype · Demo Payments Only
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* PRICING */
+
+const TOTAL_SLOTS = 20;
+
+const prices = {
+    30: 10,
+    60: 20,
+    120: 30
+};
+
+let selectedSlot = "CH-01";
+let occupied = new Set();
+let bookings = [];
+let toastTimer;
+
+/* NAVIGATION */
+
+function showPage(page, button) {
+    document.querySelectorAll(".page").forEach(section => {
+        section.classList.remove("active");
+    });
+
+    document.getElementById(page).classList.add("active");
+
+    document.querySelectorAll("nav button").forEach(item => {
+        item.classList.remove("active");
+    });
+
+    if (button) {
+        button.classList.add("active");
+    } else {
+        const navButton = [...document.querySelectorAll("nav button")]
+            .find(item => {
+                const text = item.textContent.trim().toLowerCase();
+
+                return (
+                    (page === "home" && text === "home") ||
+                    (page === "dashboard" && text === "dashboard") ||
+                    (page === "booking" && text === "book a slot") ||
+                    (page === "history" && text === "my activity")
+                );
+            });
+
+        if (navButton) navButton.classList.add("active");
+    }
+
+    renderData();
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+/* NOTIFICATION */
+
+function notify(message) {
+    const toast = document.getElementById("toast");
+
+    toast.textContent = message;
+    toast.classList.add("show");
+
+    clearTimeout(toastTimer);
+
+    toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+    }, 3000);
+}
+
+/* SLOT FUNCTIONS */
+
+function getSlotId(number) {
+    return "CH-" + String(number).padStart(2, "0");
+}
+
+function renderSlots(containerId) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = "";
+
+    for (let i = 1; i <= TOTAL_SLOTS; i++) {
+        const id = getSlotId(i);
+        const busy = occupied.has(id);
+
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "slot";
+
+        if (busy) {
+            button.classList.add("busy");
+        } else if (id === selectedSlot) {
+            button.classList.add("selected");
+        } else {
+            button.classList.add("available");
+        }
+
+        button.disabled = busy;
+
+        button.innerHTML = `
+            <span style="font-size:22px">▣</span>
+            <strong>${id}</strong>
+            <small>
+                <span class="dot">●</span>
+                ${busy ? "Occupied" : "Available"}
+            </small>
+        `;
+
+        if (!busy) {
+            button.addEventListener("click", () => selectSlot(id));
+        }
+
+        container.appendChild(button);
+    }
+}
+
+function updateSlotOptions() {
+    const select = document.getElementById("bookingSlot");
+    select.innerHTML = "";
+
+    for (let i = 1; i <= TOTAL_SLOTS; i++) {
+        const id = getSlotId(i);
+
+        if (!occupied.has(id)) {
+            const option = document.createElement("option");
+            option.value = id;
+            option.textContent = id + " - Available";
+            select.appendChild(option);
+        }
+    }
+
+    if (selectedSlot && !occupied.has(selectedSlot)) {
+        select.value = selectedSlot;
+    } else if (select.options.length > 0) {
+        select.selectedIndex = 0;
+    }
+
+    const available = TOTAL_SLOTS - occupied.size;
+
+    document.getElementById("bookingSlotCount").textContent =
+        available + (available === 1 ? " available" : " available");
+
+    const confirmButton = document.getElementById("confirmButton");
+
+    confirmButton.disabled = available === 0;
+    confirmButton.textContent = available === 0
+        ? "No Slots Available"
+        : "Confirm Booking →";
+
+    if (available === 0) {
+        document.getElementById("bookingSlotCount").textContent =
+            "No slots available";
+    }
+}
+
+function selectSlot(id) {
+    if (!id || occupied.has(id)) {
+        notify("Please select an available charging slot.");
+        return;
+    }
+
+    selectedSlot = id;
+
+    updateSlotOptions();
+    renderSlots("dashboardSlots");
+    renderSlots("bookingSlots");
+}
+
+/* PRICE UPDATE */
+
+function updatePrice() {
+    const duration = Number(
+        document.getElementById("bookingDuration").value
+    );
+
+    document.getElementById("bookingPrice").textContent =
+        "₱" + prices[duration];
+}
+
+/* BOOKING CONFIRMATION */
+
+function confirmBooking() {
+    const slot = document.getElementById("bookingSlot").value;
+    const duration = Number(
+        document.getElementById("bookingDuration").value
+    );
+
+    const payment = document.getElementById("bookingPayment").value;
+    const amount = prices[duration];
+
+    if (!slot) {
+        notify("No available slots. Please try again later.");
+        return;
+    }
+
+    if (occupied.has(slot)) {
+        notify("This slot has already been booked. Choose another.");
+        updateSlotOptions();
+        renderSlots("bookingSlots");
+        return;
+    }
+
+    const durationNames = {
+        30: "30 minutes",
+        60: "1 hour",
+        120: "2 hours"
+    };
+
+    const booking = {
+        id: Date.now(),
+        slot: slot,
+        duration: durationNames[duration],
+        minutes: duration,
+        amount: amount,
+        payment: payment,
+        date: new Date().toLocaleString(),
+        status: "Confirmed"
+    };
+
+    bookings.unshift(booking);
+    occupied.add(slot);
+
+    selectedSlot = "";
+
+    for (let i = 1; i <= TOTAL_SLOTS; i++) {
+        const id = getSlotId(i);
+
+        if (!occupied.has(id)) {
+            selectedSlot = id;
+            break;
+        }
+    }
+
+    updateSlotOptions();
+    renderSlots("dashboardSlots");
+    renderSlots("bookingSlots");
+    renderData();
+
+    showPage("history");
+
+    notify(
+        "Booking confirmed for " + slot +
+        "! Demo payment only."
+    );
+}
+
+/* DASHBOARD AND HISTORY */
+
+function renderData() {
+    const totalSpent = bookings.reduce(
+        (sum, booking) => sum + booking.amount, 0
+    );
+
+    const totalMinutes = bookings.reduce(
+        (sum, booking) => sum + booking.minutes, 0
+    );
+
+    document.getElementById("statBookings").textContent =
+        bookings.length;
+
+    document.getElementById("statTime").textContent =
+        totalMinutes >= 60
+            ? Math.floor(totalMinutes / 60) + " hr " +
+              (totalMinutes % 60) + " min"
+            : totalMinutes + " min";
+
+    document.getElementById("statSpent").textContent =
+        "₱" + totalSpent;
+
+    document.getElementById("statAvailable").textContent =
+        (TOTAL_SLOTS - occupied.size) + "/" + TOTAL_SLOTS;
+
+    const recent = document.getElementById("recentActivity");
+
+    if (bookings.length === 0) {
+        recent.innerHTML = `
+            <p style="color:var(--muted);font-size:13px;line-height:1.7">
+                No bookings yet. Book your first charging slot to see your activity here.
+            </p>
+        `;
+    } else {
+        recent.innerHTML = bookings.slice(0, 4).map(booking => `
+            <div class="activity">
+                <div class="activity-icon">⚡</div>
+
+                <div class="activity-info">
+                    <strong>${booking.slot} · ${booking.duration}</strong>
+                    <small>${booking.date}</small>
+                </div>
+
+                <div class="activity-price">₱${booking.amount}</div>
+            </div>
+        `).join("");
+    }
+
+    document.getElementById("historyCount").textContent =
+        bookings.length +
+        (bookings.length === 1 ? " booking" : " bookings");
+
+    const rows = document.getElementById("historyRows");
+
+    if (bookings.length === 0) {
+        rows.innerHTML = `
+            <p style="padding:22px 0;color:var(--muted)">
+                No bookings yet. Your confirmed bookings will appear here.
+            </p>
+        `;
+    } else {
+        rows.innerHTML = bookings.map(booking => `
+            <div class="history-row">
+                <span>
+                    <strong>${booking.slot}</strong><br>
+                    <small style="color:var(--muted)">
+                        ${booking.duration}
+                    </small>
+                </span>
+
+                <span>${booking.date}</span>
+
+                <span><strong>₱${booking.amount}</strong></span>
+
+                <span>
+                    <span class="pill">${booking.status}</span>
+                </span>
+            </div>
+        `).join("");
+    }
+}
+
+/* INITIALIZE WEBSITE */
+
+updateSlotOptions();
+renderSlots("dashboardSlots");
+renderSlots("bookingSlots");
+updatePrice();
+renderData();
+
+
+
+const adVideo = document.getElementById("chargeHubAd");
+const musicToggle = document.getElementById("musicToggle");
+const musicVolume = document.getElementById("musicVolume");
+const videoTime = document.getElementById("videoTime");
+
+if (adVideo && musicToggle && musicVolume && videoTime) {
+    // Start muted, as required by most browsers for autoplay
+    adVideo.muted = true;
+    adVideo.volume = 0.30;
+    musicVolume.value = 30;
+
+    function formatTime(seconds) {
+        if (!Number.isFinite(seconds)) return "0:00";
+
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+
+        return `${mins}:${String(secs).padStart(2, "0")}`;
+    }
+
+    function updateTime() {
+        videoTime.textContent = formatTime(adVideo.currentTime);
+    }
+
+    function updateVolumeIcon() {
+        if (adVideo.muted || adVideo.volume === 0) {
+            musicToggle.textContent = "🔇";
+            musicToggle.setAttribute("aria-label", "Turn sound on");
+        } else if (adVideo.volume < 0.5) {
+            musicToggle.textContent = "🔉";
+            musicToggle.setAttribute("aria-label", "Mute sound");
+        } else {
+            musicToggle.textContent = "🔊";
+            musicToggle.setAttribute("aria-label", "Mute sound");
+        }
+    }
+
+    // Click to mute or unmute
+    musicToggle.addEventListener("click", () => {
+        if (adVideo.muted || adVideo.volume === 0) {
+            // Restore the selected slider volume
+            if (Number(musicVolume.value) === 0) {
+                musicVolume.value = 30;
+            }
+
+            adVideo.volume = Number(musicVolume.value) / 100;
+            adVideo.muted = false;
+        } else {
+            adVideo.muted = true;
+        }
+
+        updateVolumeIcon();
+    });
+
+    // Adjust volume gradually with the slider
+    musicVolume.addEventListener("input", () => {
+        adVideo.volume = Number(musicVolume.value) / 100;
+        adVideo.muted = Number(musicVolume.value) === 0;
+
+        updateVolumeIcon();
+    });
+
+    adVideo.addEventListener("timeupdate", updateTime);
+    adVideo.addEventListener("loadedmetadata", updateTime);
+    adVideo.addEventListener("durationchange", updateTime);
+
+    updateTime();
+    updateVolumeIcon();
+}
+</script>
+
+</body>
+</html>
