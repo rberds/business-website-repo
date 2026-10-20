@@ -1,21 +1,26 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ChargeHub | CEC</title>
-<link rel="icon" type="image/png" href="chargehub-logo-final-removebg-preview.png">
+<link rel="icon" type="img/png" href="charghub-logo.png">
 <link rel="stylesheet" href="style.css">
 
 </head>
 
 <body>
 
+<!-- Joyful background audio element -->
+<audio id="joyfulMusic" loop preload="auto">
+    <source src="https://assets.mixkit.co/music/preview/mixkit-happy-days-525.mp3" type="audio/mp3">
+    Your browser does not support audio.
+</audio>
+
 <header>
     <div class="brand">
         <div class="logo-icon">
-             <img src="chargehub-logo-final-removebg-preview.png" alt="ChargeHub logo" class="logo-img">
+             <img src="charghub-logo.png" alt="ChargeHub logo" class="logo-img">
         </div>
         <div class="brand-name">charge<span>hub</span></div>
     </div>
@@ -37,7 +42,7 @@
         <div>
             <div class="eyebrow">⚡ YOUR CAMPUS CHARGING BUDDY</div>
 
-         <h1><strong>Low battery?<br><span>We've got you.</span></strong></h1>
+            <h1>Low battery?<br><span>We've got you.</span></h1>
 
             <p>
                 Welcome to ChargeHub, your campus phone charging service
@@ -69,21 +74,15 @@
                 Your browser does not support video.
             </video>
 
-    <!-- Music controls -->
-            <div class="video-controls">
-                <span id="videoTime">0:00</span>
+            <!-- Upper Right Timer -->
+            <div class="ad-timer" id="adTimer">0:00</div>
 
-                <div class="volume-control">
-                    <button type="button" id="musicToggle" aria-label="Turn sound on">
-                    🔇
-                    </button>
-                <input type="range" id="musicVolume"
-                    min="0" max="100" value="30"
-                    aria-label="Volume">
-                </div>
+            <!-- Ad Style Lower-Right Mute/Unmute Control Only -->
+            <div class="ad-mute-container">
+                <button type="button" id="musicToggle" aria-label="Mute or Unmute">
+                🔇
+                </button>
             </div>
-
-
 
             <div class="phone">
                 <div class="phone-top">
@@ -719,75 +718,52 @@ renderSlots("bookingSlots");
 updatePrice();
 renderData();
 
-
+/* AD MUTE & TIMER LOGIC */
 
 const adVideo = document.getElementById("chargeHubAd");
+const joyfulMusic = document.getElementById("joyfulMusic");
 const musicToggle = document.getElementById("musicToggle");
-const musicVolume = document.getElementById("musicVolume");
-const videoTime = document.getElementById("videoTime");
+const adTimer = document.getElementById("adTimer");
 
-if (adVideo && musicToggle && musicVolume && videoTime) {
-    // Start muted, as required by most browsers for autoplay
-    adVideo.muted = true;
-    adVideo.volume = 0.30;
-    musicVolume.value = 30;
+if (adVideo && joyfulMusic && musicToggle && adTimer) {
+    joyfulMusic.muted = true;
+    joyfulMusic.volume = 0.40;
+
+    joyfulMusic.play().catch(() => {});
 
     function formatTime(seconds) {
         if (!Number.isFinite(seconds)) return "0:00";
-
         const mins = Math.floor(seconds / 60);
         const secs = Math.floor(seconds % 60);
-
         return `${mins}:${String(secs).padStart(2, "0")}`;
     }
 
-    function updateTime() {
-        videoTime.textContent = formatTime(adVideo.currentTime);
+    function updateAdTime() {
+        adTimer.textContent = formatTime(adVideo.currentTime);
     }
 
     function updateVolumeIcon() {
-        if (adVideo.muted || adVideo.volume === 0) {
+        if (joyfulMusic.muted || joyfulMusic.volume === 0) {
             musicToggle.textContent = "🔇";
             musicToggle.setAttribute("aria-label", "Turn sound on");
-        } else if (adVideo.volume < 0.5) {
-            musicToggle.textContent = "🔉";
-            musicToggle.setAttribute("aria-label", "Mute sound");
         } else {
             musicToggle.textContent = "🔊";
             musicToggle.setAttribute("aria-label", "Mute sound");
         }
     }
 
-    // Click to mute or unmute
     musicToggle.addEventListener("click", () => {
-        if (adVideo.muted || adVideo.volume === 0) {
-            // Restore the selected slider volume
-            if (Number(musicVolume.value) === 0) {
-                musicVolume.value = 30;
-            }
-
-            adVideo.volume = Number(musicVolume.value) / 100;
-            adVideo.muted = false;
+        if (joyfulMusic.muted) {
+            joyfulMusic.muted = false;
+            joyfulMusic.play().catch(() => {});
         } else {
-            adVideo.muted = true;
+            joyfulMusic.muted = true;
         }
-
         updateVolumeIcon();
     });
 
-    // Adjust volume gradually with the slider
-    musicVolume.addEventListener("input", () => {
-        adVideo.volume = Number(musicVolume.value) / 100;
-        adVideo.muted = Number(musicVolume.value) === 0;
-
-        updateVolumeIcon();
-    });
-
-    adVideo.addEventListener("timeupdate", updateTime);
-    adVideo.addEventListener("loadedmetadata", updateTime);
-    adVideo.addEventListener("durationchange", updateTime);
-
-    updateTime();
+    adVideo.addEventListener("timeupdate", updateAdTime);
+    updateAdTime();
     updateVolumeIcon();
 }
 </script>
