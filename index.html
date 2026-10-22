@@ -6,6 +6,7 @@
     <title>ChargeHub | CEC</title>
 
     <link rel="icon" type="image/png" href="chargehub-logo.png">
+    <link rel="apple-touch-icon" href="chargehub-logo.png">
     <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
     <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
 
@@ -238,6 +239,12 @@
             background: #C8F34A18;
             bottom: -80px;
             left: -40px;
+        }
+
+        .hero-art.hero-video {
+            aspect-ratio: 16 / 9;
+            min-height: 0;
+            background: #000;
         }
 
         .hero-video video {
@@ -778,12 +785,23 @@
                 font-size: 12px;
             }
         }
+
+        .music-toggle {
+            border: 0;
+            border-radius: 50%;
+            background: var(--navy);
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
     </style>
 </head>
 
 <body>
     <audio id="joyfulMusic" loop preload="auto">
-        <source src="Chargehubbg.mp3" type="audio/mp3">
+        <source src="Chargehubbg.mp3" type="audio/mpeg">
     </audio>
 
     <header>
@@ -842,29 +860,9 @@
                     <div class="ad-timer" id="adTimer">0:00</div>
 
                     <div class="ad-mute-container">
-                        <button type="button" id="musicToggle" aria-label="Turn sound on">
+                        <button type="button" id="musicToggle" class="music-toggle" aria-label="Turn music on">
                             🔇
                         </button>
-                    </div>
-
-                    <div class="phone">
-                        <div class="phone-top">
-                            <span>9:41</span>
-                            <span>● ● ●</span>
-                        </div>
-
-                        <div class="battery">
-                            <div class="battery-fill"></div>
-                            <div class="bolt">ϟ</div>
-                        </div>
-
-                        <strong>78%</strong>
-                        <small>Powering your day</small>
-                    </div>
-
-                    <div class="float-card float-two">
-                        ✓ Easy booking
-                        <strong>Quick and simple</strong>
                     </div>
                 </div>
             </div>

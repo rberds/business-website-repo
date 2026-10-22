@@ -353,56 +353,74 @@ def format_time(seconds):
 def setup_audio():
     video = el("chargeHubAd")
     music = el("joyfulMusic")
-    toggle = el("musicToggle")
     timer = el("adTimer")
+    toggles = document.querySelectorAll(".music-toggle")
 
-    if not video or not music or not toggle or not timer:
+    if not video or not timer:
         return
 
-    music.muted = True
-    music.volume = 0.40
+    # Start muted: browsers only allow autoplay without sound.
+    video.muted = True
+    video.volume = 1.0
 
-    try:
-        music.play()
-    except Exception:
-        pass
+    if music:
+        music.muted = True
+        music.volume = 0.15   # quiet background music under the ad
+
+    def safe_play(media):
+        # play() returns a JavaScript Promise that the browser may reject
+        # (autoplay policy), so catch the rejection quietly.
+        promise = media.play()
+
+        if promise is not None:
+            promise.catch(keep_proxy(lambda error: None))
 
     def update_timer(event=None):
-        timer.textContent = format_time(video.currentTime)
+        current = format_time(video.currentTime)
+        total = format_time(video.duration)
+        timer.textContent = f"{current} / {total}"
 
-    def update_volume_icon():
-        if music.muted or music.volume == 0:
-            toggle.textContent = "🔇"
-            toggle.setAttribute("aria-label", "Turn sound on")
+    def update_icons():
+        for toggle in toggles:
+            if video.muted:
+                toggle.textContent = "🔇"
+                toggle.setAttribute("aria-label", "Turn sound on")
+            else:
+                toggle.textContent = "🔊"
+                toggle.setAttribute("aria-label", "Mute sound")
+
+    def toggle_sound(event=None):
+        if video.muted:
+            video.muted = False
+            safe_play(video)
+
+            if music:
+                music.muted = False
+                safe_play(music)
         else:
-            toggle.textContent = "🔊"
-            toggle.setAttribute("aria-label", "Mute sound")
+            video.muted = True
 
-    def toggle_music(event=None):
-        if music.muted:
-            music.muted = False
+            if music:
+                music.muted = True
 
-            try:
-                music.play()
-            except Exception:
-                pass
-        else:
-            music.muted = True
+        update_icons()
 
-        update_volume_icon()
+    for toggle in toggles:
+        toggle.addEventListener("click", keep_proxy(toggle_sound))
 
-    toggle.addEventListener(
-        "click",
-        keep_proxy(toggle_music)
-    )
+    # Update the timer from video events, plus a small timer as a backup.
+    video.addEventListener("timeupdate", keep_proxy(update_timer))
+    video.addEventListener("loadedmetadata", keep_proxy(update_timer))
+    video.addEventListener("durationchange", keep_proxy(update_timer))
+    window.setInterval(keep_proxy(update_timer), 250)
 
-    video.addEventListener(
-        "timeupdate",
-        keep_proxy(update_timer)
-    )
+    safe_play(video)
+
+    if music:
+        safe_play(music)
 
     update_timer()
-    update_volume_icon()
+    update_icons()
 
 
 # -----------------------------
